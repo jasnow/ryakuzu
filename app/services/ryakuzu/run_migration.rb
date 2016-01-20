@@ -11,7 +11,7 @@ module Ryakuzu
     end
 
     def call(migration, text_line, type)
-      date = DateTime.now.to_s(:number)
+      date = Time.zone.now.to_s(:number)
       class_name   = migration.classify
       migrate_name = "#{date}_change_#{type}_#{class_name.underscore}.rb"
       text = text_migration(type, class_name, text_line)
