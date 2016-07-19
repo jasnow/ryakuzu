@@ -5,5 +5,4 @@ test/dummy/log/
 test/dummy/tmp/
 # Added these files to not force others to use them.
 .overcommit.yml
-.rvmrc
 test/dummy/db/test.sqlite3
