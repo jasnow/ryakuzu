@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,26 +12,21 @@
 
 ActiveRecord::Schema.define(version: 20151014004636) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "authorizations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_authorizations_on_user_id"
   end
-
-  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
   create_table "bags", force: :cascade do |t|
     t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_bags_on_team_id"
   end
-
-  add_index "bags", ["team_id"], name: "index_bags_on_team_id", using: :btree
 
   create_table "enemies", force: :cascade do |t|
     t.integer  "health"
@@ -46,9 +40,8 @@ ActiveRecord::Schema.define(version: 20151014004636) do
     t.integer  "user_id"
     t.string   "img_url",    default: ""
     t.integer  "coins"
+    t.index ["user_id"], name: "index_enemies_on_user_id"
   end
-
-  add_index "enemies", ["user_id"], name: "index_enemies_on_user_id", using: :btree
 
   create_table "items", force: :cascade do |t|
     t.string   "name"
@@ -58,9 +51,8 @@ ActiveRecord::Schema.define(version: 20151014004636) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.boolean  "used",          default: false
+    t.index ["itemable_type", "itemable_id"], name: "index_items_on_itemable_type_and_itemable_id"
   end
-
-  add_index "items", ["itemable_type", "itemable_id"], name: "index_items_on_itemable_type_and_itemable_id", using: :btree
 
   create_table "monsters", force: :cascade do |t|
     t.integer  "team_id"
@@ -78,12 +70,11 @@ ActiveRecord::Schema.define(version: 20151014004636) do
     t.integer  "previous_magic"
     t.boolean  "armed",                       default: false
     t.integer  "item_id"
+    t.index ["item_id"], name: "index_monsters_on_item_id"
+    t.index ["name"], name: "index_monsters_on_name"
+    t.index ["team_id"], name: "index_monsters_on_team_id"
+    t.index ["user_id"], name: "index_monsters_on_user_id"
   end
-
-  add_index "monsters", ["item_id"], name: "index_monsters_on_item_id", using: :btree
-  add_index "monsters", ["name"], name: "index_monsters_on_name", using: :btree
-  add_index "monsters", ["team_id"], name: "index_monsters_on_team_id", using: :btree
-  add_index "monsters", ["user_id"], name: "index_monsters_on_user_id", using: :btree
 
   create_table "shops", force: :cascade do |t|
     t.string   "name"
@@ -102,10 +93,9 @@ ActiveRecord::Schema.define(version: 20151014004636) do
     t.integer  "exp",                        default: 0
     t.boolean  "move",                       default: true
     t.integer  "to_next_level"
+    t.index ["name"], name: "index_teams_on_name"
+    t.index ["user_id"], name: "index_teams_on_user_id"
   end
-
-  add_index "teams", ["name"], name: "index_teams_on_name", using: :btree
-  add_index "teams", ["user_id"], name: "index_teams_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",   null: false
@@ -116,20 +106,13 @@ ActiveRecord::Schema.define(version: 20151014004636) do
     t.integer  "sign_in_count",          default: 0,    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.integer     "current_sign_in_ip"
-    t.integer     "last_sign_in_ip"
+    t.integer  "current_sign_in_ip"
+    t.integer  "last_sign_in_ip"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "coins",                  default: 5000
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-
-  add_foreign_key "authorizations", "users"
-  add_foreign_key "bags", "teams"
-  add_foreign_key "monsters", "items"
-  add_foreign_key "monsters", "teams"
-  add_foreign_key "monsters", "users"
-  add_foreign_key "teams", "users"
 end
